@@ -1,0 +1,39 @@
+import math
+
+
+def build(v, l, r):
+    # v - number of vertice in tree, l - left border (including), r - right border (not including)
+    if l - r == 1:
+        tree[v] = arr[l]
+        return
+    m = (l + r) // 2
+    build(2 * v + 2, m, r)
+    build(2 * v + 1, l, m)
+    tree[v] = min(tree[2 * v + 1], tree[2 * v + 2])
+
+
+def change(ind, value, v, l, r):
+    if ind >= r or ind < l:
+        return 
+    if l - r == 1:
+        tree[v] = arr[ind]
+        return 
+    m = (r + l) // 2
+    change(ind, value, 2 * v + 2, m, r)
+    change(ind, value, 2 * v + 1, l, m)
+    tree[v] = min(tree[2 * v + 1], tree[2 * v + 2])
+        
+
+def min(v, r, l, q_l, q_r):
+    if q_l >= l and r < q_r:
+        return tree[v]
+    if q_l >= r or q_r <= l:
+        return float('inf')
+    m = (q_l + q_r) // 2
+    return min(min(2 * v + 1, r, l, m, q_r), min(2 * v + 1, r, l, m, q_r))
+
+n = int(input())
+arr = [int(el) for el in input().split()]
+for _ in range(math.ceil(math.log(len(arr), 2)) - len(arr)):
+    arr += [float('inf')] # дополняем размер массива до степени двойки фоновыми числами (в случае min - +беск)
+tree = [0] * (len(arr) * 2 - 1)
