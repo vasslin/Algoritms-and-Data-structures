@@ -99,3 +99,59 @@ for i in range(len(l) + 1):
         print(i - len(s) - 1)
 ```
 
+## 3 Вопрос.
+### Алгоритм Дейкстры. Постановка задачи, описание алгоритма за O(V^2 + E). Улучшение алгоритма для разреженных графов за O(ElogV).
+
+**Алгоритм Дейкстры** - алгоритм поиска кратчайшего пути в графе от вершины V1 до всех остальных.
+
+**Постановка задачи, описание алгоритма за O(V^2 + E)**
+_Суть_: находим вершину curr, от которой расстояние до нужной вершины А наименьшее, для каждого соседа curr сравниваем расстояние до А по прямой и через соседа, находим минимальное.\
+Вершину с минимальным расстояние до А делаем curr, если она еще не была такой (если она не посещена)
+массив **dist** хранит текущие минимальные расстояния от вершины  до остальных вершин, изначально они равны бесконечности, dist[A] = 0
+массив **visited** хранит информацию о посещенных вершинах: 
++ visited[i] = True, если вершина уже была curr (посещена)
++ visited[i] = False, если вершина еще не была curr (не посещена)
+
+```rb
+n = int(input())
+adj_list = [[] for _ in range(n)]
+for i in range(n):
+    m = int(input())
+    for j in range(m):
+        adj_list[i].append(tuple(map(int, input().split())))
+        # (номер, вес)
+
+curr = int(input())
+dist = [float('inf')] * n
+dist[curr] = 0
+min_v = curr
+
+visited = [0] * n
+count = n
+
+while count > 0:
+    for to, weight in adj_list[curr]:
+        if not visited[to]:
+            if dist[to] > dist[curr] + weight:
+                dist[to] = dist[curr] + weight
+    visited[curr] = True
+    count -= 1
+    # ищем новую минимальную вершину
+    for i in range(n):
+        if min_v == curr or not visited[i] and dist[i] < dist[min_v]:
+            min_v = i
+    curr = min_v
+
+print(*dist)
+```
+
+
+
+
+
+
+
+
+
+
+
