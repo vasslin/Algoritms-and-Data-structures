@@ -144,10 +144,49 @@ while count > 0:
 
 print(*dist)
 ```
-**Ассимптотика** - O(V^2 + E)
+**Асимптотика** - O(V^2 + E)
+
+**Улучшение алгоритма для разреженных графов за O(ElogV)**
+_Идея_: создаем min-кучу,добавляем к нее элементы (weight, to) при изменении расстояния в dist
+пока куча полная: 
+достаем элемент
+  если вершина не посещена:
+    посещаем всех ее сосдей:
+      если сосед не посещен и расстояние от А до соседа > расстояния от А до вершины + расстояние от вершины до соседа:
+        заменяем dist[соседа]
+        добавляем в кучу (сосед, dist[сосед])
+    отмечаем вершину посещенной
+    
 
 
+```rb
+n, m = [int(el) for el in input().split()]
+adj_list = [[] for _ in range(n)]
+visited = [False for _ in range(n)]
+dist = [float('inf') for _ in range(n)]
+dist[0] = 0
+heap = []
+count_of_visited = 0
+heapq.heappush(heap, (0, 0))
+for j in range(m):
+    f, t, w = [int(el) for el in input().split()]
+    adj_list[f].append([w, t])
 
+while heap:
+    hp = heapq.heappop(heap)
+    weight, to = hp[0], hp[1]
+    if not visited[to]:
+        for el in adj_list[to]:
+            w, t = el[0], el[1]
+            if not visited[t] and dist[t] > dist[to] + w:
+                dist[t] = dist[to] + w
+                heapq.heappush(heap, (dist[t], t))
+        visited[to] = True
+        count_of_visited += 1
+    if count_of_visited == n: break
+print(*dist)
+```
+**Асимптотика** -  O(ElogV)
 
 
 
