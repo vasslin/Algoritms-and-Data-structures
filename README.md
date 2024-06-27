@@ -501,7 +501,7 @@ print("НОП:", lcs)
 Дан массив, нужно найти сумму элементов на отрезке [l; r)
 
 **Решение за O(logN) при помощи дерева отрезков**
-Функция def sum_(..) _см segment tree(sum)[https://github.com/vasslin/Algoritms-and-Data-structures/blob/main/segment%20tree%20(sum)]_
+Функция def sum_(..) _см [segment tree(sum)](https://github.com/vasslin/Algoritms-and-Data-structures/blob/main/segment%20tree%20(sum))_
 
 
 
