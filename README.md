@@ -284,6 +284,7 @@ print(*steps)
 **база:**
 dp[0][j] = 0, j in range(0, n + 1)
 dp[i][0] = 0, i in range(0, n + 1)
+
 **переход:**
 _if j >= weight[i]:_
   dp[i][j] = max(dp[i - 1][j - weight[i]] + coasts[i], dp[i - 1][j]
@@ -332,3 +333,5 @@ print(len(belongings))
 print(*[weight[k] for k in belongings])
 print(*[coasts[g] for g in belongings])
 ```
+
+**Оценка времени работы** - O(N * W)
