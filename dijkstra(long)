@@ -1,0 +1,32 @@
+n = int(input())
+adj_list = [[] for _ in range(n)]
+for i in range(n):
+    m = int(input())
+    for j in range(m):
+        adj_list[i].append(tuple(map(int, input().split())))
+        # (номер, вес)
+
+
+
+curr = int(input())
+dist = [float('inf')] * n
+dist[curr] = 0
+min_v = curr
+
+visited = [0] * n
+count = n
+
+while count > 0:
+    for to, weight in adj_list[curr]:
+        if not visited[to]:
+            if dist[to] > dist[curr] + weight:
+                dist[to] = dist[curr] + weight
+    visited[curr] = True
+    count -= 1
+    # ищем новую минимальную вершину
+    for i in range(n):
+        if min_v == curr or not visited[i] and dist[i] < dist[min_v]:
+            min_v = i
+    curr = min_v
+
+print(*dist)
