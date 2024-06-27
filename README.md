@@ -388,7 +388,37 @@ print(max_len)
 + a[n] - подпоследовательность
 + d[n]
 
-d[i] - хранит значени
+d[i] - хранит min значение, на которое может быть закончена НВП длины i
+
+```rb
+n = int(input())
+a = [int(el) for el in input().split()]
+INF = float('inf')
+d = [INF] * (n + 1)
+d[0] = -INF
+lis = [[] for _ in range(n + 1)] # хранит НВП длины i
+
+lis[1] = [a[0]] # делаем для i = 0 отдельно, тк в цикле ниже рассматриваем i с единицы
+# (индекс первого большего элемента в d равен 1)
+
+for i in range(1, n):
+    l = -1
+    r = i + 1
+    while r - l > 1: # ищем в d первый элемент, больший a[i]
+        m = (l + r) // 2
+        if d[m] >= a[i]:
+            r = m
+        else:
+            l = m
+    d[r] = a[i]
+    lis[r] = lis[r - 1] + [a[i]]
+
+ind = 0
+while d[ind] != INF:
+    ind += 1
+print("Длина НВП:", ind)
+print("НВП:", lis[ind])
+```
 
 
 
