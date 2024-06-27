@@ -491,4 +491,5 @@ while i != 0 and j != 0:
             i -= 1
         else:
             j -= 1
-print("НОП:", lcs)```
+print("НОП:", lcs)
+```
