@@ -310,7 +310,7 @@ for i in range(1, n + 1):
         if weight[i] <= j:
             dp[i][j] = max(dp[i - 1][j], dp[i - 1][j - weight[i]] + coasts[i])
         else:
-            dp[i][j] = dp[i][j - 1]
+            dp[i][j] = dp[i - 1][j]
 
 # восстановление ответа
 belongings = []
