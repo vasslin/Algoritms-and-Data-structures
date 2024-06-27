@@ -144,7 +144,7 @@ while count > 0:
 
 print(*dist)
 ```
-
+**Ассимптотика** - O(V^2 + E)
 
 
 
