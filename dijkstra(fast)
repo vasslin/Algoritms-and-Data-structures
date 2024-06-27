@@ -1,0 +1,26 @@
+ import heapq
+
+n, m = [int(el) for el in input().split()]
+adj_list = [[] for _ in range(n)]
+visited = [False for _ in range(n)]
+dist = [float('inf') for _ in range(n)]
+dist[0] = 0
+heap = []
+count_of_visited = 0
+heapq.heappush(heap, (0, 0))
+for j in range(m):
+    f, t, w = [int(el) for el in input().split()]
+    adj_list[f].append([w, t])
+while heap:
+    hp = heapq.heappop(heap)
+    weight, to = hp[0], hp[1]
+    if not visited[to]:
+        for el in adj_list[to]:
+            w, t = el[0], el[1]
+            if not visited[t] and dist[t] > dist[to] + w:
+                dist[t] = dist[to] + w
+                heapq.heappush(heap, (dist[t], t))
+        visited[to] = True
+        count_of_visited += 1
+    if count_of_visited == n: break
+print(*dist[1::], sep="\n")
