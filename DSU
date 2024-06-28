@@ -1,0 +1,31 @@
+class DSU(object):
+    def __init__(self, n):
+        p = [0] * n
+        c = [1] * n
+        for i in range(n):
+            p[i] = i
+        self.parents = p
+        self.children = c
+
+    def get_leader(self, v):
+        if self.parents[v] == v:
+            return v
+        else:
+            self.parents[v] = self.get_leader(self.parents[v])
+            return self.parents[v]
+
+    def add_edge(self, v1, v2):
+        leader1 = self.get_leader(v1)
+        leader2 = self.get_leader(v2)
+        if leader2 == leader1: return
+        if self.children[leader1] < self.children[leader2]:
+            self.parents[leader1] = leader2
+            self.children[leader2] += self.children[leader1]
+            self.children[leader1] = 0
+        else:
+            self.parents[leader2] = leader1
+            self.children[leader1] += self.children[leader2]
+            self.children[leader2] = 0
+
+    def at_the_same_comp(self, v1, v2):
+        return self.get_leader(v1) == self.get_leader(v2)
