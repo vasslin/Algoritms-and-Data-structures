@@ -1,0 +1,33 @@
+n = 4
+edges = [ # Список рёбер для примера
+    (1, 2, 3),
+    (2, 1, 3),
+    (2, 3, 2),
+    (3, 2, 2),
+    (1, 3, 10),
+    (3, 1, 10),
+]
+
+INF = 10**9 + 7
+start = 0
+
+dist = [INF] * n
+dist[start] = 0
+
+# n - 1 раз перебираем все ребра, сравниваем dist[to] (имеющееся расстояние) dist[fr] + weight (расстояние через вершину fr о ребру)
+
+for _ in range(n - 1):
+    for fr, to, weight in edges:
+        if dist[to - 1] > dist[fr - 1] + weight:
+            dist[to - 1] = dist[fr - 1] + weight
+
+print(*["inf" if x == INF else x for x in dist])
+
+# критерий наличия отрицательного цикла: на n-ой итерации расстояние продолжит уменьшаться
+negative_cycle = False
+for fr, to, weight in edges:
+    if dist[to - 1] > dist[fr - 1] + weight:
+        negative_cycle = True
+        break
+
+print("Есть отрицательный цикл" if negative_cycle else "Нет отрицательного цикла")
