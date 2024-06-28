@@ -1,0 +1,92 @@
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Random random = new Random(49);
+        int[] keys = new int[10];
+
+        Node root = null; // корневой элемент
+
+        // Построение
+        // Поочередное добавление элементов с обновлением корневого элемента
+        for (int key: keys){
+            root = insert(root, key);
+        }
+
+
+    }
+
+    // функция слияния двух декартовых деревьев в одно
+    // важно: все элементы Т1 должны быть меньше всех элементов Т2
+    public static Node merge(Node T1, Node T2) {
+        if (T1 == null) return T2;
+        if (T2 == null) return T1;
+        if (T1.y > T2.y) {
+            T1.right = merge(T1.right, T2);
+            return T1;
+        }
+        T2.left = merge(T1, T2.left);
+        return T2;
+    }
+
+    // Функция разделения дерева на два поддерева по ключу k
+    // Возвращает пару из двух деревьев: левое дерево с ключами меньше k, правое дерево с ключами больше или равными k
+    public static Pair split(Node T, int k){
+        if (T == null) return new Pair(null, null);
+        if (T.x >= k){
+            Pair pair = split(T.left, k);
+            T.left = pair.second;
+            return new Pair(pair.first, T);
+        }
+        else { // T.x < k
+            Pair pair = split(T.right, k);
+            T.right = pair.first;
+            return new Pair(T, pair.second);
+        }
+    }
+
+    // Функция добавления ключа х в декартово дерево
+    // Важно: ключа х не должно быть в дереве Т
+    // Принцип работы:
+    // делим дерево на два поддерева: <x и >x
+    // объединяем дерево <х  и вершину с ключом х, обхединяем все с оставшимся деревом
+    public static Node insert(Node T, int x){
+        Pair pair = split(T, x);
+        return merge(merge(pair.first, new Node(x, null, null)), pair.second);
+    }
+
+    // Функция удаления элемента со значением x
+    // Принцип работы:
+    // Делим дерево на два поддерева по ключу х: Т1 = pair1.first (<x), T2 = pair1.second (>=x)
+    // Делим дерево Т2 на два поддерева по ключу х + 1: pair2.first (<x+1), pair2.second(>= x+1)
+    // Объединяем Т1.first (<x) и pair2.second (>= x + 1)
+
+    public static Node delete(Node T, int x){
+        Pair pair = split(T, x);
+        return merge(pair.first, split(pair.second, x + 1).second);
+    }
+
+}
+
+
+class Node{
+    public static Random random = new Random(1000);
+    int x, y;
+    Node left, right;
+    public Node(int x, Node left, Node right){
+        this.left = left;
+        this.right = right;
+        this.x = x;
+        this.y = random.nextInt();
+    }
+}
+
+class Pair{
+    Node first, second;
+    public Pair(Node first, Node second){
+        this.first = first;
+        this.second = second;
+    }
+}
+
