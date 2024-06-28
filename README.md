@@ -513,7 +513,7 @@ change(..) - O(logN)
 ## 9 Вопрос.
 ### Поиск минимума на отрезке + изменение значения в массиве. Постановка задачи, решение за O(logN) при помощи дерева отрезков. Построение дерева отрезков. Оценка времени выполнения.
 
-_см [segment tree(sum)](https://github.com/vasslin/Algoritms-and-Data-structures/blob/main/segment%20tree%20(min))_
+_см [segment tree(min)](https://github.com/vasslin/Algoritms-and-Data-structures/blob/main/segment%20tree%20(min))_
 
 **Постановка задачи**:
 Дан массив, нужно найти минимум из элементов на отрезке [l; r)
@@ -526,4 +526,36 @@ _см [segment tree(sum)](https://github.com/vasslin/Algoritms-and-Data-structur
 
 change(..) - O(logN)
 
+## 10 Вопрос.
+### Алгоритм Форда-Беллмана. Описание алгоритма. Оценка времени выполнения.
+
+**Описание алгоритма**
+Алгоритм Форда-Беллмана используется для нахождения кратчайшего расстояния от вершины _start_ до всех остальных вершин в графе. 
+В отличие от алгоритма Дейкстры, алгоритм Форда-Беллмана применяется для графов с ребрами отрицательного веса.
+
+_Алгоритм:_
++ n - 1 раз перебираем все ребра:
+
+    сравниваем dist[to] (имеющееся расстояние) dist[fr] + weight (расстояние через вершину fr о ребру)
+  
++ _критерий наличия отрицательного цикла:_ на n-ой итерации расстояние продолжит уменьшаться
+
+```rb
+for _ in range(n - 1):
+    for fr, to, weight in edges:
+        if dist[to - 1] > dist[fr - 1] + weight:
+            dist[to - 1] = dist[fr - 1] + weight
+
+print(*["inf" if x == INF else x for x in dist])
+ 
+negative_cycle = False
+for fr, to, weight in edges:
+    if dist[to - 1] > dist[fr - 1] + weight:
+        negative_cycle = True
+        break
+
+print("Есть отрицательный цикл" if negative_cycle else "Нет отрицательного цикла")
+```
+
+**Оценка времени выполнения.** - O(N*E)
 
