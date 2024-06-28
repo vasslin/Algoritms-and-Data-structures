@@ -630,9 +630,12 @@ while count_of_edges < n - 1:
 
 ```
 
+**Асимптотика** - O(nlogn) 
+
 see [Kruskal's algorithm with DSU](https://github.com/vasslin/Algoritms-and-Data-structures/blob/main/Kruskal's%20algorithm%20with%20DSU)
 
-
+## 13 Вопрос.
+### Двоичные деревья поиска. Построение, добавление элемента, удаление элемента. Привести пример каждой операции. Асимптотика операций.
 
 
 
