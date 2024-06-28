@@ -1,31 +1,31 @@
-class DSU(object):
+class DSU:
     def __init__(self, n):
-        p = [0] * n
-        c = [1] * n
-        for i in range(n):
-            p[i] = i
-        self.parents = p
-        self.children = c
+        # firstly each element is itself a parent, each set contains one element (== one child element)
+        self.parents = [i for i in range(n)]
+        self.children = [1] * n
 
     def get_leader(self, v):
+        # leader - the element who is itself parent
         if self.parents[v] == v:
             return v
         else:
+            # rewrite the parent of v into the leading element
             self.parents[v] = self.get_leader(self.parents[v])
             return self.parents[v]
 
     def add_edge(self, v1, v2):
         leader1 = self.get_leader(v1)
         leader2 = self.get_leader(v2)
-        if leader2 == leader1: return
-        if self.children[leader1] < self.children[leader2]:
-            self.parents[leader1] = leader2
-            self.children[leader2] += self.children[leader1]
-            self.children[leader1] = 0
-        else:
+        if leader1 == leader2: return
+        # new parent is the vertice who has more children
+        if self.children[leader1] > self.children[leader2]:
             self.parents[leader2] = leader1
             self.children[leader1] += self.children[leader2]
             self.children[leader2] = 0
-
+        else:
+            self.parents[leader1] = leader2
+            self.children[leader2] += self.children[leader1]
+            self.children[leader1] = 0
+        
     def at_the_same_comp(self, v1, v2):
         return self.get_leader(v1) == self.get_leader(v2)
