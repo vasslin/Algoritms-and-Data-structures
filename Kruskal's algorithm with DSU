@@ -1,0 +1,54 @@
+class DSU:
+    def __init__(self, n):
+        # firstly each element is itself a parent, each set contains one element (== one child element)
+        self.parents = [i for i in range(n)]
+        self.children = [1] * n
+
+    def get_leader(self, v):
+        # leader - the element who is itself parent
+        if self.parents[v] == v:
+            return v
+        else:
+            # rewrite the parent of v into the leading element
+            self.parents[v] = self.get_leader(self.parents[v])
+            return self.parents[v]
+
+    def add_edge(self, v1, v2):
+        leader1 = self.get_leader(v1)
+        leader2 = self.get_leader(v2)
+        if leader1 == leader2: return
+        # new parent is the vertice who has more children
+        if self.children[leader1] > self.children[leader2]:
+            self.parents[leader2] = leader1
+            self.children[leader1] += self.children[leader2]
+            self.children[leader2] = 0
+        else:
+            self.parents[leader1] = leader2
+            self.children[leader2] += self.children[leader1]
+            self.children[leader1] = 0
+
+    def at_the_same_comp(self, v1, v2):
+        return self.get_leader(v1) == self.get_leader(v2)
+
+edges = [
+    (1, 2, 3),
+    (2, 1, 3),
+    (2, 3, 2),
+    (3, 2, 2),
+    (1, 3, 10),
+    (3, 1, 10),
+    (4, 1, 2),
+    (0, 1, 1)
+]
+n = 5
+count_of_edges = 0 # ребра, которые уменьшают количество компонент связности. когда их будет n - 1, прерываем цикл
+dsu = DSU(n)
+tree = []
+while count_of_edges < n - 1:
+    f, t, w = edges.pop()
+    if not dsu.at_the_same_comp(f, t): # edge
+        dsu.add_edge(f, t)
+        count_of_edges += 1
+        tree.append((f, t, w))
+
+print(*tree)
