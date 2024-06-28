@@ -565,6 +565,37 @@ print("Есть отрицательный цикл" if negative_cycle else "Н�
 
 see [DSU](https://github.com/vasslin/Algoritms-and-Data-structures/blob/main/DSU)
 
+**Эвристика сжатия пути.** Оптимизируем работу функции get_leader: перед тем, как вернуть ответ, запишем его в parents от текущей вершины, то есть переподвесим его за самую высокую.
+
+```rb
+if self.parents[v] == v:
+            return v
+        else:
+            # rewrite the parent of v into the leading element
+            self.parents[v] = self.get_leader(self.parents[v])
+            return self.parents[v]
+```
+
+**Эвристика по размеру.** Перед добавлением ребра (объединением вершин) определим вершину с наибольшим количеством детей (элементов в множестве) - она и будет новым родительским элементом
+
+```rb
+def add_edge(self, v1, v2):
+        leader1 = self.get_leader(v1)
+        leader2 = self.get_leader(v2)
+        if leader1 == leader2: return
+        # new parent is the vertice who has more children
+        if self.children[leader1] > self.children[leader2]:
+            self.parents[leader2] = leader1
+            self.children[leader1] += self.children[leader2]
+            self.children[leader2] = 0
+        else:
+            self.parents[leader1] = leader2
+            self.children[leader2] += self.children[leader1]
+            self.children[leader1] = 0
+```
+
+
+
 **Асимптотика:**
 + def __ init__(self, n) - O(N)
 + def get_leader(self, v) - O(N)
