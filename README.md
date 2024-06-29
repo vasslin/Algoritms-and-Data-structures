@@ -683,7 +683,10 @@ _Идея_:
 see [Treap (Descartes tree)](https://github.com/vasslin/Algoritms-and-Data-structures/blob/main/Treap%20(Descartes%20tree))
 
 
+## 15 Вопрос.
+### Хеш-таблицы с открытой адресацией, метод цепочек. Асимптотика операций работы с хеш-таблицами (вставка, удаление).
 
+**Хеш-таблицы с открытой адресацией**
 
 
 
